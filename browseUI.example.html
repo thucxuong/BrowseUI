@@ -6,15 +6,18 @@
         <link rel="stylesheet" href="css/styles.css">
     </head>
     <body>
-        <form id="testing" aciton="" method="post" >
-            <input type="file" title="asdasda sdasd asd asd asd" id="test-upload" name="testUpload" size="22">
+        <form id="testing1" aciton="" method="post" >
+            <input type="file" title="Example button 1" id="test-upload1" name="testUpload1" size="22">
+        </form>
+        <form id="testing2" aciton="" method="post" >
+            <input type="file" title="Example button 2" id="test-upload2" name="testUpload2" size="22">
         </form>
 
         <script src="http://code.jquery.com/jquery.min.js"></script>
-        <script src="js/browseUI.js"></script>
+        <script src="js/browseUI.jquery.js"></script>
         <script type="text/javascript">
     		jQuery(document).ready(function(){
-    			jQuery("#test-upload").browseUI();
+    			jQuery("#test-upload1,#test-upload2").browseUI();
     		});
         </script>
   </body>
