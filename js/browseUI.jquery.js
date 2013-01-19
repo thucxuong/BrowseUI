@@ -19,21 +19,7 @@
     options = $.extend(defaults, options),
     groupSet = _this.selector.split(",");
 
-    for(var i=0; i<groupSet.length; i++)
-    {
-        var formSelArr = groupSet[i].split(" ");
-        while(formSelArr.length && formSelArr[formSelArr.length-1].indexOf("form")!=0){
-            formSelArr.pop();
-        };
-
-        if(formSelArr.length)
-        {
-            formSelArr.join(" ");
-            jQuery(formSelArr[0]).bind("reset.file", function(){
-                _this.reset();
-            });
-        }
-    }
+    
     //make 2 fake inputs: text and button.
     //text input: .CustomBrowseUIText
     //button input: .CustomBrowseUIBtn
@@ -72,7 +58,10 @@
             "type":"text"
         });
 
-        fakeForm = jQuery("<form id='"+options.className+"Form'></form>").appendTo("body");
+        if(jQuery("#"+options.className+"Form").length==0)
+            fakeForm = jQuery("<form id='"+options.className+"Form'></form>").appendTo("body");
+        else
+            fakeForm = jQuery("#"+options.className+"Form");
         !options.editableText && fakeText.attr("readonly","readonly");
 
         //Hide the original browse and give a classname to know it's initialized
@@ -81,6 +70,7 @@
         //This method help the input file reset when someone try to choose the wrong file type or reset the form.
         inputFile.reset = function(){
             jQuery(this).detach().appendTo("#"+options.className+"Form");
+            console.log(fakeForm);
             fakeForm.get(0).reset();
             fakeText.before(jQuery(this));
             fakeText.val("").removeClass("error");
@@ -119,10 +109,34 @@
         });
     }
 
-    return _this.each(function() {
+
+    _this.each(function() {
         //Return if it's already init
         new BrowseBtnObj(this);
     });
+    
+    // Bind the reset moethod of custom form into native form element
+    for(var i=0; i<groupSet.length; i++)
+    {
+        var formSelArr = groupSet[i].split(" ");
+        while(formSelArr.length && formSelArr[formSelArr.length-1].indexOf("form")!=0){
+            formSelArr.pop();
+        };
+        if(formSelArr.length)
+        {
+            formSelArr.join(" ");
+            jQuery(formSelArr[0]).each(function(){
+                if(jQuery(this).find("."+options.className).length)
+                {
+                    jQuery(this).bind("reset.file", function(){
+                        _this.reset();
+                    });
+                }
+            });
+        }
+    }
+
+    return _this;
 
   };
 })( jQuery );
