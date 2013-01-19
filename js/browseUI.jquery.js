@@ -126,7 +126,7 @@
         {
             formSelArr.join(" ");
             jQuery(formSelArr[0]).each(function(){
-                if(jQuery(this).find("."+options.className).length)
+                if(jQuery(this).find("input[type=file].Initialized").length)
                 {
                     jQuery(this).bind("reset.file", function(){
                         _this.reset();
