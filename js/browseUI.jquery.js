@@ -114,27 +114,22 @@
         //Return if it's already init
         new BrowseBtnObj(this);
     });
-    
-    // Bind the reset moethod of custom form into native form element
-    for(var i=0; i<groupSet.length; i++)
-    {
-        var formSelArr = groupSet[i].split(" ");
-        while(formSelArr.length && formSelArr[formSelArr.length-1].indexOf("form")!=0){
-            formSelArr.pop();
-        };
-        if(formSelArr.length)
-        {
-            formSelArr.join(" ");
-            jQuery(formSelArr[0]).each(function(){
-                if(jQuery(this).find("input[type=file].Initialized").length)
-                {
-                    jQuery(this).bind("reset.file", function(){
-                        _this.reset();
-                    });
-                }
-            });
-        }
-    }
+
+    var BUArray = {};
+    _this.each(function(){
+        var tempId = this.form.id;
+        if(BUArray[tempId]==undefined)
+            BUArray[tempId]=[];
+        BUArray[tempId].push(this);
+    });
+    jQuery.each(BUArray,function(key,val){
+        jQuery("#"+key).bind("reset.browseui",function(){
+            for(var i=0; i< val.length; i++)
+            {
+                val[i].reset();
+            }
+        });
+    })
 
     return _this;
 
